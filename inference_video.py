@@ -158,7 +158,7 @@ def build_read_buffer(user_args, read_buffer, videogen):
     try:
         for frame in videogen:
             if not user_args.img is None:
-                frame = cv2.imread(os.path.join(user_args.img, frame), cv2.IMREAD_UNCHANGED)[:, :, ::-1].copy()
+                frame = cv2.imread(os.path.join(user_args.img, frame))[:, :, ::-1].copy()
             if user_args.montage:
                 frame = frame[:, left: left + w]
             read_buffer.put(frame)
@@ -197,7 +197,7 @@ tmp = max(128, int(128 / args.scale))
 ph = ((h - 1) // tmp + 1) * tmp
 pw = ((w - 1) // tmp + 1) * tmp
 padding = (0, pw - w, 0, ph - h)
-pbar = tqdm(total=tot_frame)
+pbar = tqdm(total=tot_frame,ncols=100,colour='red')
 if args.montage:
     lastframe = lastframe[:, left: left + w]
 write_buffer = Queue(maxsize=500)
@@ -280,7 +280,7 @@ while(not write_buffer.empty()):
 pbar.close()
 if not vid_out is None:
     vid_out.release()
-
+print("..Video Interpolation Has Completed, Video saved to: ", args.output)
 # move audio to new video file if appropriate
 if args.png == False and fpsNotAssigned == True and not args.video is None:
     try:
