@@ -94,9 +94,14 @@ if args.modelDir == "RIFE46":
       from train_log.RIFE_HDv3 import Model
   except:
       print("Please download our model from model list")
-else:
+elif args.modelDir == "RIFE45":
   try:
       from RIFE45.RIFE_HDv3 import Model
+  except:
+      print("Please download our model from model list")
+else:
+  try:
+      from RIFE44.RIFE_HDv3 import Model
   except:
       print("Please download our model from model list")
 model = Model()
