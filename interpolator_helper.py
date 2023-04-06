@@ -173,7 +173,7 @@ def interpolate_inference_video(args):
         try:
             for frame in videogen:
                 if not user_args.img is None:
-                    frame = cv2.imread(os.path.join(user_args.img, frame))[:, :, ::-1].copy()
+                    frame = cv2.imread(os.path.join(user_args.img, frame), cv2.IMREAD_UNCHANGED)[:, :, ::-1].copy()
                 if user_args.montage:
                     frame = frame[:, left: left + w]
                 read_buffer.put(frame)
