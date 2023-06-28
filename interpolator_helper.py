@@ -12,7 +12,7 @@ import skvideo.io
 from queue import Queue, Empty
 from model.pytorch_msssim import ssim_matlab
 
-sys.path.extend(['Practical-RIFE'])
+sys.path.extend(['Practical-RIFE/'])
 
 warnings.filterwarnings("ignore")
 
