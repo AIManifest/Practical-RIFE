@@ -92,24 +92,39 @@ def interpolate_inference_video(args):
         if(args.fp16):
             torch.set_default_tensor_type(torch.cuda.HalfTensor)
 
-    if args.modelDir == "RIFE46":
+    if "RIFE44" in args.modelDir:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE44.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
+    elif "RIFE45" in args.modelDir:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE45.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
+    elif "RIFE46" in args.modelDir:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE46.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
+    elif "RIFE47" in args.modelDir:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE47.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
+    elif "RIFE49" in args.modelDir:
       try:
-          from RIFE46.RIFE_HDv3 import Model
-      except:
-          print("Please download our model from model list")
-    elif args.modelDir == "RIFE45":
-      try:
-          from RIFE45.RIFE_HDv3 import Model
-      except:
-          print("Please download our model from model list")
-    elif args.modelDir == "RIFE49":
-      try:
+          print(f'Using {args.modelDir} model')
           from RIFE49.RIFE_HDv3 import Model
       except:
           print("Please download our model from model list")
     else:
       try:
-          print('Using unspecified Model, this is not an error. Confirm which RIFE model you are using.')
+          print(f'Using unspecified Model -- {args.modelDir}, this is not an error. Confirm which RIFE model you are using.')
           from train_log.RIFE_HDv3 import Model
       except:
           print("Please download our model from model list")
@@ -117,7 +132,7 @@ def interpolate_inference_video(args):
     model = Model()
     if not hasattr(model, 'version'):
         model.version = 0
-    model.load_model(args.modelDir, -1)
+    model.load_model(args.modelDir, 0)
     print("Loaded 3.x/4.x HD model.")
     model.eval()
     model.device()
