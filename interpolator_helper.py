@@ -132,7 +132,7 @@ def interpolate_inference_video(args):
     model = Model()
     if not hasattr(model, 'version'):
         model.version = 0
-    model.load_model(args.modelDir, 0)
+    model.load_model(args.modelDir, -1)
     print("Loaded 3.x/4.x HD model.")
     model.eval()
     model.device()
