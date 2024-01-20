@@ -122,6 +122,12 @@ def interpolate_inference_video(args):
           from RIFE49.RIFE_HDv3 import Model
       except:
           print("Please download our model from model list")
+    elif "RIFE414" in args.modelDir:
+      try:
+          print(f'Using {args.modelDir} model')
+          from RIFE414.RIFE_HDv3 import Model
+      except:
+          print("Please download our model from model list")
     else:
       try:
           print(f'Using unspecified Model -- {args.modelDir}, this is not an error. Confirm which RIFE model you are using.')
