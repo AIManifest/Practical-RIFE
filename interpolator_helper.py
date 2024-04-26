@@ -122,10 +122,10 @@ def interpolate_inference_video(args):
           from RIFE49.RIFE_HDv3 import Model
       except:
           print("Please download our model from model list")
-    elif "RIFE414" in args.modelDir:
+    elif "RIFE415" in args.modelDir:
       try:
           print(f'Using {args.modelDir} model')
-          from RIFE414.RIFE_HDv3 import Model
+          from RIFE415.RIFE_HDv3 import Model
       except:
           print("Please download our model from model list")
     else:
@@ -138,6 +138,8 @@ def interpolate_inference_video(args):
     model = Model()
     if not hasattr(model, 'version'):
         model.version = 0
+
+    print(args.modelDir, 'RIFE MODEL DIR')
     model.load_model(args.modelDir, -1)
     print("Loaded 3.x/4.x HD model.")
     model.eval()
