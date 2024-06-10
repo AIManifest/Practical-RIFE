@@ -1,6 +1,8 @@
 import os
+import gc
 import sys
 import cv2
+import time
 import torch
 import argparse
 import numpy as np
@@ -16,6 +18,12 @@ sys.path.extend(['Practical-RIFE/'])
 
 warnings.filterwarnings("ignore")
 
+def clear_memory():
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
+    gc.collect()
+    print('Emptied Memory')
+    
 def interpolate_inference_video(args):
     args = args
     video = args.video
@@ -37,10 +45,10 @@ def interpolate_inference_video(args):
         import shutil
         import moviepy.editor
         tempAudioFileName = "./temp/audio.mkv"
-
+    
         # split audio from original video file and store in "temp" directory
         if True:
-
+    
             # clear old "temp" directory if it exits
             if os.path.isdir("temp"):
                 # remove temp directory
@@ -49,12 +57,12 @@ def interpolate_inference_video(args):
             os.makedirs("temp")
             # extract audio from video
             os.system('ffmpeg -y -i "{}" -c:a copy -vn {}'.format(sourceVideo, tempAudioFileName))
-
+    
         targetNoAudio = os.path.splitext(targetVideo)[0] + "_noaudio" + os.path.splitext(targetVideo)[1]
         os.rename(targetVideo, targetNoAudio)
         # combine audio file and new video file
         os.system('ffmpeg -y -i "{}" -i {} -c copy "{}"'.format(targetNoAudio, tempAudioFileName, targetVideo))
-
+    
         if os.path.getsize(targetVideo) == 0: # if ffmpeg failed to merge the video and audio together try converting the audio to aac
             tempAudioFileName = "./temp/audio.m4a"
             os.system('ffmpeg -y -i "{}" -c:a aac -b:a 160k -vn {}'.format(sourceVideo, tempAudioFileName))
@@ -64,12 +72,12 @@ def interpolate_inference_video(args):
                 print("Audio transfer failed. Interpolated video will have no audio")
             else:
                 print("Lossless audio transfer failed. Audio was transcoded to AAC (M4A) instead.")
-
+    
                 # remove audio-less video
                 os.remove(targetNoAudio)
         else:
             os.remove(targetNoAudio)
-
+    
         # remove temp directory
         shutil.rmtree("temp")
 
@@ -241,7 +249,7 @@ def interpolate_inference_video(args):
     ph = ((h - 1) // tmp + 1) * tmp
     pw = ((w - 1) // tmp + 1) * tmp
     padding = (0, pw - w, 0, ph - h)
-    pbar = tqdm(total=tot_frame)
+    pbar = tqdm(total=tot_frame, desc='Increasing Framerate')
     if args.montage:
         lastframe = lastframe[:, left: left + w]
     write_buffer = Queue(maxsize=500)
@@ -318,13 +326,18 @@ def interpolate_inference_video(args):
         write_buffer.put(np.concatenate((lastframe, lastframe), 1))
     else:
         write_buffer.put(lastframe)
-    import time
+        
     while(not write_buffer.empty()):
         time.sleep(0.1)
+        
     pbar.close()
+    
     if not vid_out is None:
         vid_out.release()
     print("..Video Interpolation Has Completed, Video saved to: ", args.output)
+
+    clear_memory()
+    
     # move audio to new video file if appropriate
     if args.png == False and fpsNotAssigned == True and not args.video is None:
         try:
