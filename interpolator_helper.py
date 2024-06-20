@@ -125,23 +125,29 @@ def interpolate_inference_video(args):
         except:
             print("Please download our model from model list")
     elif "RIFE49" in args.modelDir:
-      try:
-          print(f'Using {args.modelDir} model')
-          from RIFE49.RIFE_HDv3 import Model
-      except:
-          print("Please download our model from model list")
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE49.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
     elif "RIFE415" in args.modelDir:
-      try:
-          print(f'Using {args.modelDir} model')
-          from RIFE415.RIFE_HDv3 import Model
-      except:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE415.RIFE_HDv3 import Model
+        except:
           print("Please download our model from model list")
+    elif "RIFE417" in args.modelDir:
+        try:
+            print(f'Using {args.modelDir} model')
+            from RIFE417.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
     else:
-      try:
-          print(f'Using unspecified Model -- {args.modelDir}, this is not an error. Confirm which RIFE model you are using.')
-          from train_log.RIFE_HDv3 import Model
-      except:
-          print("Please download our model from model list")
+        try:
+            print(f'Using unspecified Model -- {args.modelDir}, this is not an error. Confirm which RIFE model you are using.')
+            from train_log.RIFE_HDv3 import Model
+        except:
+            print("Please download our model from model list")
     global model
     model = Model()
     if not hasattr(model, 'version'):
